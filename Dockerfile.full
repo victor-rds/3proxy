@@ -29,6 +29,7 @@ RUN cd 3proxy &&\
  echo LIBS = -l:libcrypto.a -l:libssl.a -ldl >>Makefile.Linux &&\
  make -f Makefile.Linux &&\
  strip bin/3proxy &&\
+ strip bin/mycrypt &&\
  strip bin/StringsPlugin.ld.so &&\
  strip bin/TrafficPlugin.ld.so &&\
  strip bin/PCREPlugin.ld.so &&\
@@ -39,7 +40,8 @@ RUN cd 3proxy &&\
 
 FROM busybox:glibc
 COPY --from=buildenv /usr/local/lib/3proxy/libdl.so.* /lib/
-COPY --from=buildenv 3proxy/bin/3proxy /bin/
+COPY --from=buildenv 3proxy/bin/3proxy /bin/3proxy
+COPY --from=buildenv 3proxy/bin/mycrypt /bin/mycrypt
 COPY --from=buildenv 3proxy/bin/*.ld.so /usr/local/3proxy/libexec/
 RUN mkdir /usr/local/3proxy/logs &&\
  mkdir /usr/local/3proxy/conf &&\
